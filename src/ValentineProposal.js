@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './ValentineProposal.css';
 
 const ValentineProposal = () => {
@@ -20,7 +20,15 @@ const ValentineProposal = () => {
     };
   }, []);
 
-  const handleMouseMove = (e) => {
+  const moveNoButton = useCallback(() => {
+    const maxX = window.innerWidth - 120;
+    const maxY = window.innerHeight - 50;
+    const newX = Math.random() * maxX;
+    const newY = Math.random() * maxY;
+    setNoButtonPos({ x: newX, y: newY });
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
     if (accepted || !noButtonRef.current) return;
 
     const noButton = noButtonRef.current.getBoundingClientRect();
@@ -36,15 +44,7 @@ const ValentineProposal = () => {
     if (distance < 100) {
       moveNoButton();
     }
-  };
-
-  const moveNoButton = () => {
-    const maxX = window.innerWidth - 120;
-    const maxY = window.innerHeight - 50;
-    const newX = Math.random() * maxX;
-    const newY = Math.random() * maxY;
-    setNoButtonPos({ x: newX, y: newY });
-  };
+  }, [accepted, moveNoButton]);
 
   const handleYesClick = () => {
     setAccepted(true);
@@ -81,7 +81,7 @@ const ValentineProposal = () => {
       window.addEventListener('mousemove', handleMouseMove);
       return () => window.removeEventListener('mousemove', handleMouseMove);
     }
-  }, [accepted]);
+  }, [accepted, handleMouseMove]);
 
   return (
     <div className="valentine-container">
@@ -89,7 +89,6 @@ const ValentineProposal = () => {
         <div className="proposal-screen">
           <div className="content-center">
             <div className="intro-gif">
-              {/* Tenor GIF for intro */}
               <div 
                 className="tenor-gif-embed" 
                 data-postid="14801073887683685524" 
@@ -102,16 +101,16 @@ const ValentineProposal = () => {
                 </a>
               </div>
             </div>
-
+            
             <h1 className="romantic-heading">
               Will you be my Valentine? 💕
             </h1>
-
+            
             <div className="button-container">
               <button className="yes-button" onClick={handleYesClick}>
                 Yes! ❤️
               </button>
-
+              
               <button 
                 ref={noButtonRef}
                 className="no-button"
@@ -131,18 +130,17 @@ const ValentineProposal = () => {
         <div className="celebration-screen">
           <div className="celebration-content">
             <div className="celebration-gif">
-              {/* Local GIF from public folder */}
               <img 
                 src="/celebration.gif" 
                 alt="Celebration" 
                 className="gif-image"
               />
             </div>
-
+            
             <h1 className="celebration-message">
-              Yes, I lovee youuu babyyy!! ❤️
+              Yes, you have finally made the right choice ❤️
             </h1>
-
+            
             <div className="hearts-float">
               <span className="heart">❤️</span>
               <span className="heart">💕</span>
