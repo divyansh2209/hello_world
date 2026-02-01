@@ -138,7 +138,7 @@ const ValentineProposal = () => {
             </div>
             
             <h1 className="celebration-message">
-              Yes, you have finally made the right choice ❤️
+              Yes,I lovee youuu babyyy ❤️
             </h1>
             
             <div className="hearts-float">
